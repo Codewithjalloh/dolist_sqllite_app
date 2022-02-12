@@ -9,6 +9,11 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+
+  var _categoryNameController = TextEditingController();
+  var _categoryDescriptionController = TextEditingController();
+
+
   _showFormDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -17,29 +22,35 @@ class _CategoryScreenState extends State<CategoryScreen> {
           return AlertDialog(
             actions: <Widget>[
               TextButton(
-                onPressed: () {},
+                onPressed: () => Navigator.pop(context),
                 child: Text("Cancel"),
+                style: TextButton.styleFrom(
+                  primary: Colors.red,),
+
               ),
+
               TextButton(
                 onPressed: () {},
-                child: Text("Save"),
+                child: Text("Save",),
+                style: TextButton.styleFrom(
+                  primary: Colors.blue,
+                ),
               ),
-              TextButton(
-                onPressed: () {},
-                child: Text("Modify"),
-              ),
+
             ],
             title: const Text("categories form"),
             content: SingleChildScrollView(
               child: Column(
-                children: const [
+                children:  [
                   TextField(
+                    controller: _categoryNameController,
                     decoration: InputDecoration(
                       hintText: "Write a category",
                       labelText: "Category",
                     ),
                   ),
                   TextField(
+                    controller: _categoryDescriptionController,
                     decoration: InputDecoration(
                       hintText: "Write a decriptions",
                       labelText: "Description",
