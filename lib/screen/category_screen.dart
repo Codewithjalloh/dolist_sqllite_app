@@ -1,3 +1,4 @@
+import 'package:dolist_sqllite_app/models/category.dart';
 import 'package:dolist_sqllite_app/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +11,11 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
 
-  var _categoryNameController = TextEditingController();
-  var _categoryDescriptionController = TextEditingController();
+  final _categoryNameController = TextEditingController();
+  final _categoryDescriptionController = TextEditingController();
+
+  final _category = Category();
+  final _categoryService = CategoryScreen();
 
 
   _showFormDialog(BuildContext context) {
@@ -30,7 +34,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
 
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  _category.name = _categoryNameController.text;
+                  _category.description = _categoryDescriptionController.text;
+                },
                 child: Text("Save",),
                 style: TextButton.styleFrom(
                   primary: Colors.blue,
