@@ -24,6 +24,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 onPressed: () {},
                 child: Text("Save"),
               ),
+              TextButton(
+                onPressed: () {},
+                child: Text("Modify"),
+              ),
             ],
             title: const Text("categories form"),
             content: SingleChildScrollView(
