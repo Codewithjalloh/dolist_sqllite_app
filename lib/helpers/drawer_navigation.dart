@@ -3,7 +3,7 @@ import 'package:dolist_sqllite_app/screen/home_screen.dart';
 import 'package:dolist_sqllite_app/screen/category_screen.dart';
 
 class DrawerNavigation extends StatefulWidget {
-  const DrawerNavigation({Key? key}) : super(key: key);
+  const DrawerNavigation({Key key}) : super(key: key);
 
   @override
   _DrawerNavigationState createState() => _DrawerNavigationState();

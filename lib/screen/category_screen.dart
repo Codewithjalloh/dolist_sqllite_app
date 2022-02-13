@@ -4,7 +4,7 @@ import 'package:dolist_sqllite_app/services/category_service.dart';
 import 'package:flutter/material.dart';
 
 class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({Key? key}) : super(key: key);
+  const CategoryScreen({Key key}) : super(key: key);
 
   @override
   _CategoryScreenState createState() => _CategoryScreenState();
@@ -35,10 +35,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
 
               TextButton(
-                onPressed: () {
+                onPressed: () async {
                   _category.name = _categoryNameController.text;
                   _category.description = _categoryDescriptionController.text;
-                  _categoryService.saveCategory(_category);
+                 var result = await _categoryService.saveCategory(_category);
+                 print(result);
                 },
                 child: Text("Save",),
                 style: TextButton.styleFrom(
