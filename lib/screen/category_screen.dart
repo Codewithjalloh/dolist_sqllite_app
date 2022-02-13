@@ -15,8 +15,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
   final _categoryNameController = TextEditingController();
   final _categoryDescriptionController = TextEditingController();
 
+  final _editCategoryNameController = TextEditingController();
+  final _editCategoryDescriptionController = TextEditingController();
+
   final _category = Category();
   final _categoryService = CategoryService();
+
+  var category;
+
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
 
   List<Category> _categoryList = [];
 
@@ -26,7 +34,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     getAllCatgories();
   }
 
-  getAllCatgories()  async {
+  getAllCatgories() async {
     _categoryList = [];
     var categories = await _categoryService.readCategories();
     categories.forEach((category) {
@@ -38,6 +46,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
         _categoryList.add(categoryModel);
       });
     });
+  }
+
+  _editCategory(BuildContext context, categoryId) async {
+    category = await _categoryService.readCategoryById(categoryId);
+    setState(() {
+      _editCategoryNameController.text = category[0]["name"] ?? "No Name";
+      _editCategoryDescriptionController.text =
+          category[0]["description"] ?? "No Description";
+    });
+    _editFormDialog(context);
   }
 
 
@@ -60,8 +78,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 onPressed: () async {
                   _category.name = _categoryNameController.text;
                   _category.description = _categoryDescriptionController.text;
-                 var result = await _categoryService.saveCategory(_category);
-                 print(result);
+                  var result = await _categoryService.saveCategory(_category);
+                  print(result);
                 },
                 child: Text("Save",),
                 style: TextButton.styleFrom(
@@ -73,7 +91,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             title: const Text("categories form"),
             content: SingleChildScrollView(
               child: Column(
-                children:  [
+                children: [
                   TextField(
                     controller: _categoryNameController,
                     decoration: InputDecoration(
@@ -95,13 +113,82 @@ class _CategoryScreenState extends State<CategoryScreen> {
         });
   }
 
+
+  _editFormDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (param) {
+          return AlertDialog(
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel"),
+                style: TextButton.styleFrom(
+                  primary: Colors.red,),
+
+              ),
+
+              TextButton(
+                onPressed: () async {
+                  _category.id = category[0]["id"];
+                  _category.name = _editCategoryNameController.text;
+                  _category.description = _editCategoryDescriptionController.text;
+
+
+                  var result = await _categoryService.updateCatory(_category);
+                  if (result > 0) {
+                    Navigator.pop(context);
+                    getAllCatgories();
+                    _showSuccessSnackBar(Text("Updated"));
+                  }
+                },
+                child: Text("Update",),
+                style: TextButton.styleFrom(
+                  primary: Colors.blue,
+                ),
+              ),
+
+            ],
+            title: const Text("Edit Categories form"),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _editCategoryNameController,
+                    decoration: InputDecoration(
+                      hintText: "Write a category",
+                      labelText: "Category",
+                    ),
+                  ),
+                  TextField(
+                    controller: _editCategoryDescriptionController,
+                    decoration: InputDecoration(
+                      hintText: "Write a decriptions",
+                      labelText: "Description",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  _showSuccessSnackBar(message) {
+    var _snackBar = SnackBar(content: message);
+    _globalKey.currentState.showSnackBar(_snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       appBar: AppBar(
         leading: ElevatedButton(
-          onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => HomeScreen())),
+          onPressed: () =>
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => HomeScreen())),
           child: Icon(
             Icons.arrow_back,
             color: Colors.white,
@@ -119,23 +206,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 child: ListTile(
                   leading: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () {
+                      _editCategory(context, _categoryList[index].id);
+                    },
                   ),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget> [
+                    children: <Widget>[
                       Text(_categoryList[index].name),
                       IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red,),
-                          onPressed: () {}, ),
+                        icon: Icon(Icons.delete, color: Colors.red,),
+                        onPressed: () {},),
                     ],
                   ),
                   //subtitle: Text(_categoryList[index].description),
                 ),
               ),
             );
-
-      }),
+          }),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {

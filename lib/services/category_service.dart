@@ -18,4 +18,14 @@ class CategoryService {
     return await _repository.readData("categories");
 
   }
+
+  // read data from table by id
+  readCategoryById(categoryId) async {
+    return await _repository.readDataById("categories", categoryId);
+  }
+
+  // update date from table
+  updateCatory(Category category) async {
+    return await _repository.updateData("categories", category.categoryMap());
+  }
 }
