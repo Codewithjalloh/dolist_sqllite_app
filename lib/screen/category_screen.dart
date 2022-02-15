@@ -113,7 +113,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
         });
   }
 
-
   _editFormDialog(BuildContext context) {
     return showDialog(
         context: context,
