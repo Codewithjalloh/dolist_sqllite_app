@@ -1,3 +1,4 @@
+import 'package:dolist_sqllite_app/services/category_service.dart';
 import 'package:flutter/material.dart';
 
 class TodoScreen extends StatefulWidget {
@@ -7,14 +8,29 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   var todoTitleControlller = TextEditingController();
-
   var todoDescriptionControlller = TextEditingController();
-
   var todoDateControlller = TextEditingController();
-
   var _selectedValue;
+  var _categories = <DropdownMenuItem>[];
 
-  var _categories;
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
+  }
+
+  _loadCategories() async {
+    var _categoryService = CategoryService();
+    var catagories = await _categoryService.readCategories();
+    catagories.forEach((category) {
+      setState(() {
+        _categories.add(DropdownMenuItem(
+          child: Text(category["name"]),
+          value: category["name"],),);
+      });
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +50,8 @@ class _TodoScreenState extends State<TodoScreen> {
             TextField(
               controller: todoDescriptionControlller,
               decoration: InputDecoration(
-                  labelText: "Descriptions", hintText: "Write to do Description"),
+                  labelText: "Descriptions",
+                  hintText: "Write to do Description"),
             ),
             TextField(
               controller: todoDateControlller,
