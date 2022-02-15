@@ -79,7 +79,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   _category.name = _categoryNameController.text;
                   _category.description = _categoryDescriptionController.text;
                   var result = await _categoryService.saveCategory(_category);
-                  print(result);
+
+                  if (result > 0) {
+                    print(result);
+                    Navigator.pop(context);
+                    getAllCatgories();
+                    _showSuccessSnackBar(Text("Saved"));
+                  }
+
+
                 },
                 child: Text("Save",),
                 style: TextButton.styleFrom(
@@ -173,6 +181,44 @@ class _CategoryScreenState extends State<CategoryScreen> {
           );
         });
   }
+  _deleteFormDialog(BuildContext context, categoryId) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (param) {
+          return AlertDialog(
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel"),
+                style: TextButton.styleFrom(
+                  primary: Colors.green,),
+
+              ),
+
+              TextButton(
+                onPressed: () async {
+
+
+                  var result = await _categoryService.deleteCategory(categoryId);
+                  if (result > 0) {
+                    Navigator.pop(context);
+                    getAllCatgories();
+                    _showSuccessSnackBar(Text("Deleted"),);
+                  }
+                },
+                child: Text("Delete",),
+                style: TextButton.styleFrom(
+                  primary: Colors.red,
+                ),
+              ),
+
+            ],
+            title: const Text("Are you sure you want to delete this"),
+
+          );
+        });
+  }
 
   _showSuccessSnackBar(message) {
     var _snackBar = SnackBar(content: message);
@@ -215,7 +261,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       Text(_categoryList[index].name),
                       IconButton(
                         icon: Icon(Icons.delete, color: Colors.red,),
-                        onPressed: () {},),
+                        onPressed: () {
+                          _deleteFormDialog(context, _categoryList[index].id);
+                        },),
                     ],
                   ),
                   //subtitle: Text(_categoryList[index].description),
