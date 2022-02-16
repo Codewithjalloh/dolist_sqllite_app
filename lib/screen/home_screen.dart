@@ -1,4 +1,5 @@
 import 'package:dolist_sqllite_app/helpers/drawer_navigation.dart';
+import 'package:dolist_sqllite_app/models/todo.dart';
 import 'package:dolist_sqllite_app/screen/todo_screen.dart';
 import 'package:dolist_sqllite_app/services/todo_service.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +13,32 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+
   TodoService _todoService;
-  List<Todo> _todoList = List<Todo>();
+  List _todoList = <Todo>[];
+
+  initState() {
+    super.initState();
+    getAllTodos();
+  }
 
   getAllTodos() async {
     _todoService = TodoService();
-    _todoList = List<Todo>();
+    _todoList = <Todo>[];
 
-    var todos = await _todoService.readTodos()
+    var todos = await _todoService.readTodos();
+    todos.forEach((todo) {
+      setState(() {
+        var model = Todo();
+        model.id = todo["id"];
+        model.title = todo["title"];
+        model.description = todo["description"];
+        model.category = todo["category"];
+        model.todoDate = todo["todoDate"];
+        model.isFinished = todo["isFinished"];
+        _todoList.add(model);
+      });
+    });
   }
 
 
@@ -32,6 +51,27 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("TodoList"),
       ),
       drawer: DrawerNavigation(),
+      body: ListView.builder(itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+          child: Card(
+            elevation: 8,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            child: ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(_todoList[index].title ?? "No Title"),
+                ],
+              ),
+              subtitle: Text(_todoList[index].description ?? "No Description"),
+              trailing: Text(_todoList[index].todoDate ?? "No Date") ,
+            )
+          ),
+        );
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
