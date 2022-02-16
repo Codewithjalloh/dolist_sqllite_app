@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   TodoService _todoService;
-  List _todoList = <Todo>[];
+  List<Todo> _todoList = <Todo>[];
 
   initState() {
     super.initState();
@@ -51,14 +51,15 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("TodoList"),
       ),
       drawer: DrawerNavigation(),
-      body: ListView.builder(itemBuilder: (context, index) {
+      body: ListView.builder(
+          itemCount: _todoList.length,
+          itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
           child: Card(
             elevation: 8,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-            ),
+              borderRadius: BorderRadius.circular(0)),
             child: ListTile(
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

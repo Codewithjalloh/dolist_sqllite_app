@@ -1,3 +1,4 @@
+import 'package:dolist_sqllite_app/services/category_service.dart';
 import 'package:flutter/material.dart';
 import 'package:dolist_sqllite_app/screen/home_screen.dart';
 import 'package:dolist_sqllite_app/screen/category_screen.dart';
@@ -10,6 +11,30 @@ class DrawerNavigation extends StatefulWidget {
 }
 
 class _DrawerNavigationState extends State<DrawerNavigation> {
+
+  List<Widget> _categoryList = [];
+  CategoryService _categoryService = CategoryService();
+
+  @override
+  initState() {
+    super.initState();
+    getAllCategories();
+  }
+
+  getAllCategories() async {
+    var categories = await _categoryService.readCategories();
+
+    categories.forEach((category) {
+      setState(() {
+        _categoryList.add(ListTile(
+          title: Text(category["name"]),
+        ));
+      });
+
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,6 +60,10 @@ class _DrawerNavigationState extends State<DrawerNavigation> {
               title: Text("Categories"),
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoryScreen())),
             ),
+            Divider(),
+            Column(
+              children: _categoryList,
+            )
             
             
 
