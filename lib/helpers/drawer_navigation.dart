@@ -1,3 +1,4 @@
+import 'package:dolist_sqllite_app/screen/todos_by_category.dart';
 import 'package:dolist_sqllite_app/services/category_service.dart';
 import 'package:flutter/material.dart';
 import 'package:dolist_sqllite_app/screen/home_screen.dart';
@@ -26,8 +27,13 @@ class _DrawerNavigationState extends State<DrawerNavigation> {
 
     categories.forEach((category) {
       setState(() {
-        _categoryList.add(ListTile(
-          title: Text(category["name"]),
+        _categoryList.add(InkWell(
+          onTap: () => Navigator.push(context, MaterialPageRoute(
+
+              builder: (context) => new TodosByCategory())),
+          child: ListTile(
+            title: Text(category["name"]),
+          ),
         ));
       });
 

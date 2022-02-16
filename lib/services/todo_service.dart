@@ -17,5 +17,11 @@ class TodoService {
     return await _repository.readData("todos");
   }
 
+  // read todoes by category
+  readTodosByCategory(category) async {
+    return await _repository.readDataByColumnName(
+        "todos", "category", category);
+  }
+
 }
 

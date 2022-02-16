@@ -3,14 +3,14 @@ import 'package:sqflite/sqflite.dart';
 
 class Repository {
   DatabaseConnection _databaseConnection;
+
   Repository() {
     // initialise database connection
     _databaseConnection = DatabaseConnection();
   }
 
-
-
   static Database _database;
+
   Future<Database> get database async {
     if (_database != null) return _database;
     _database = await _databaseConnection.setDatbase();
@@ -33,14 +33,13 @@ class Repository {
   readDataById(table, itemId) async {
     var connection = await database;
     return await connection.query(table, where: "id=?", whereArgs: [itemId]);
-
-
   }
 
   // uodate data from table
   updateData(table, data) async {
     var connection = await database;
-    return await connection.update(table, data, where: "id=?", whereArgs: [data["id"]]);
+    return await connection
+        .update(table, data, where: "id=?", whereArgs: [data["id"]]);
   }
 
   // delete data fromthe table
@@ -49,4 +48,10 @@ class Repository {
     return await connection.rawDelete("DELETE FROM $table WHERE id = $itemId");
   }
 
+  // read date from table by colum name
+  readDataByColumnName(table, columnName, columnValue) async {
+    var connection = await database;
+    return await connection
+        .query(table, where: "$columnName =?", whereArgs: [columnValue]);
+  }
 }
