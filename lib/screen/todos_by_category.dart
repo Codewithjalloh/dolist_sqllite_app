@@ -49,18 +49,24 @@ class _TodosByCategoryState extends State<TodosByCategory> {
             child: ListView.builder(
               itemCount: _todoList.length,
                 itemBuilder: (context, index) {
-                return Card(
-                  elevation: 8,
-                  child: ListTile(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(_todoList[index].title ?? "No Title"),
-                      ],
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0)
                     ),
-                    subtitle: Text(_todoList[index].description ?? "No Description"),
-                    trailing: Text(_todoList[index].todoDate ?? "No Date") ,
+                    elevation: 8,
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(_todoList[index].title),
+                        ],
+                      ),
+                      subtitle: Text(_todoList[index].description),
+                      trailing: Text(_todoList[index].todoDate) ,
 
+                    ),
                   ),
                 );
                 }),

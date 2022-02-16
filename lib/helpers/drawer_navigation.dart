@@ -30,7 +30,7 @@ class _DrawerNavigationState extends State<DrawerNavigation> {
         _categoryList.add(InkWell(
           onTap: () => Navigator.push(context, MaterialPageRoute(
 
-              builder: (context) => new TodosByCategory())),
+              builder: (context) => new TodosByCategory(category: category["name"],))),
           child: ListTile(
             title: Text(category["name"]),
           ),
