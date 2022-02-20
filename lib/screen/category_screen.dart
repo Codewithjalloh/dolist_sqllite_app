@@ -78,6 +78,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 onPressed: () async {
                   _category.name = _categoryNameController.text;
                   _category.description = _categoryDescriptionController.text;
+
                   var result = await _categoryService.saveCategory(_category);
 
                   if (result > 0) {
@@ -86,8 +87,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     getAllCatgories();
                     _showSuccessSnackBar(Text("Saved"));
                   }
-
-
                 },
                 child: Text("Save",),
                 style: TextButton.styleFrom(
@@ -198,8 +197,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
               TextButton(
                 onPressed: () async {
-
-
                   var result = await _categoryService.deleteCategory(categoryId);
                   if (result > 0) {
                     Navigator.pop(context);
@@ -239,7 +236,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             color: Colors.white,
           ),
         ),
-        title: Text("Category"),
+        title: Text("Categories"),
       ),
       body: ListView.builder(
           itemCount: _categoryList.length,
