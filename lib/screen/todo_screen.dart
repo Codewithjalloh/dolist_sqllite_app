@@ -57,7 +57,6 @@ class _TodoScreenState extends State<TodoScreen> {
   }
   _showSuccessSnackBar(message) {
     var _snackBar = SnackBar(content: message);
-
     _globalKey.currentState.showSnackBar(_snackBar);
   }
 
