@@ -6,9 +6,7 @@ class CategoryService {
 
   CategoryService() {
     _repository = Repository();
-
   }
-
   saveCategory(Category category) async {
     return await _repository.insertData("categories", category.categoryMap());
   }
