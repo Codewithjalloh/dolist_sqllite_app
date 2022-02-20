@@ -5,14 +5,12 @@ import 'package:dolist_sqllite_app/screen/home_screen.dart';
 import 'package:dolist_sqllite_app/screen/category_screen.dart';
 
 class DrawerNavigation extends StatefulWidget {
-  const DrawerNavigation({Key key}) : super(key: key);
 
   @override
   _DrawerNavigationState createState() => _DrawerNavigationState();
 }
 
 class _DrawerNavigationState extends State<DrawerNavigation> {
-
   List<Widget> _categoryList = [];
   CategoryService _categoryService = CategoryService();
 
@@ -29,7 +27,6 @@ class _DrawerNavigationState extends State<DrawerNavigation> {
       setState(() {
         _categoryList.add(InkWell(
           onTap: () => Navigator.push(context, MaterialPageRoute(
-
               builder: (context) => new TodosByCategory(category: category["name"],))),
           child: ListTile(
             title: Text(category["name"]),
