@@ -11,10 +11,8 @@ class TodosByCategory extends StatefulWidget {
 }
 
 class _TodosByCategoryState extends State<TodosByCategory> {
-
-  List<Todo> _todoList = List<Todo>();
+  List<Todo> _todoList = <Todo>[];
   TodoService _todoService = TodoService();
-
 
   @override
   initState() {
@@ -59,9 +57,7 @@ class _TodosByCategoryState extends State<TodosByCategory> {
                     child: ListTile(
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(_todoList[index].title),
-                        ],
+                        children:<Widget>[Text(_todoList[index].title)],
                       ),
                       subtitle: Text(_todoList[index].description),
                       trailing: Text(_todoList[index].todoDate) ,
