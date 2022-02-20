@@ -5,18 +5,15 @@ import 'package:dolist_sqllite_app/services/todo_service.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key key}) : super(key: key);
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   TodoService _todoService;
   List<Todo> _todoList = <Todo>[];
 
+  @override
   initState() {
     super.initState();
     getAllTodos();
@@ -27,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _todoList = <Todo>[];
 
     var todos = await _todoService.readTodos();
+
     todos.forEach((todo) {
       setState(() {
         var model = Todo();
